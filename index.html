@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Автопорт-Групп — Первый этап</title>
+<style>
+@font-face { font-family:"Avtoport"; src:url("assets/fonts/Avtoport.ttf") format("truetype"); font-weight:400; font-display:swap; }
+@font-face { font-family:"Avtoport"; src:url("assets/fonts/Avtoport-Italic.ttf") format("truetype"); font-style:italic; font-display:swap; }
+:root {
+  --ink:#2E3035; --muted:#6D6C6C; --line:#E4E7EB; --soft:#F4F6F9;
+  --blue:#286EF2; --deep:#0B2A64;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0; background:#fff; color:var(--ink);
+  font:16px/1.55 "Inter","Segoe UI",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+a { color:inherit; }
+.wrap { max-width:1180px; margin:0 auto; padding:0 24px; }
+.disp { font-family:"Inter",sans-serif; font-weight:700; text-transform:uppercase; letter-spacing:.02em; }
+
+header.top { position:sticky; top:0; z-index:20; background:rgba(255,255,255,.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+.top .wrap { display:flex; align-items:center; gap:20px; height:60px; }
+nav { display:flex; gap:18px; margin-left:auto; font-size:13.5px; }
+nav a { text-decoration:none; color:var(--muted); padding:4px 0; border-bottom:2px solid transparent; }
+nav a:hover { color:var(--ink); border-color:var(--blue); }
+
+.hero { padding:72px 0 40px; border-bottom:1px solid var(--line); }
+.hero .eyebrow { font-size:12.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--blue); font-weight:600; }
+.hero h1 { font-family:"Avtoport","Inter",sans-serif; font-weight:400; font-size:clamp(32px,4.4vw,56px);
+             line-height:1.16; letter-spacing:.04em; margin:14px 0 18px; text-transform:uppercase; }
+.hero p { max-width:620px; color:var(--muted); font-size:15.5px; }
+.hero .stats { display:flex; gap:34px; margin-top:26px; flex-wrap:wrap; }
+.hero .stats div b { display:block; font-family:"Avtoport","Inter",sans-serif; font-size:27px; letter-spacing:.03em; }
+.hero .stats div span { font-size:12.5px; color:var(--muted); }
+
+.road { position:relative; height:104px; margin:30px 0 6px; border-radius:16px; background:var(--soft);
+         overflow:hidden; }
+.road .truck { position:absolute; bottom:30px; left:0; width:180px; opacity:.92;
+                animation:drive 17s linear infinite, bob 1.6s ease-in-out infinite alternate; }
+.road .truck.far { width:92px; bottom:52px; opacity:.28; animation-duration:26s; animation-delay:-7s; }
+.road .dashes { position:absolute; left:0; right:0; bottom:24px; height:2px;
+                 background:repeating-linear-gradient(90deg,#C9CED6 0 30px,transparent 30px 58px);
+                 animation:road 1.1s linear infinite; }
+@keyframes drive { 0% { left:-200px; } 100% { left:calc(100% + 20px); } }
+@keyframes bob { from { transform:translateY(0); } to { transform:translateY(-2px); } }
+@keyframes road { from { background-position:0 0; } to { background-position:-58px 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .road .truck, .road .dashes { animation:none; }
+  .road .truck { left:40px; }
+}
+
+section { padding:56px 0; border-bottom:1px solid var(--line); }
+h2 { font-family:"Avtoport","Inter",sans-serif; font-weight:400; font-size:27px; line-height:1.22;
+      letter-spacing:.04em; margin:0 0 8px; text-transform:uppercase; }
+h2 + .lead { color:var(--muted); margin:0 0 26px; max-width:720px; }
+h3 { font-family:"Avtoport","Inter",sans-serif; font-weight:400; font-size:19px; line-height:1.28;
+      letter-spacing:.04em; margin:34px 0 6px; text-transform:uppercase; }
+h4 { font-size:15px; margin:0; }
+.lead { color:var(--muted); }
+
+.done { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+.card { border:1px solid var(--line); border-radius:14px; padding:18px 20px; background:#fff; }
+.card b { display:block; font-size:14.5px; margin-bottom:4px; }
+.card span { color:var(--muted); font-size:13.5px; }
+
+.pages { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px; }
+.page { position:relative; display:block; border:1px solid var(--line); border-radius:8px; overflow:hidden; background:var(--soft); }
+.page img { width:100%; display:block; }
+.page span { position:absolute; right:6px; bottom:4px; font-size:11px; color:#fff; background:rgba(46,48,53,.72); border-radius:4px; padding:0 5px; }
+.page:hover { border-color:var(--blue); }
+
+.btn { display:inline-flex; align-items:center; gap:8px; background:var(--ink); color:#fff; text-decoration:none;
+       padding:11px 18px; border-radius:10px; font-size:14px; font-weight:600; }
+.btn.ghost { background:transparent; color:var(--ink); border:1px solid var(--line); }
+
+.spec { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.spec img { width:100%; border:1px solid var(--line); border-radius:10px; background:#fff; }
+.sample { border:1px solid var(--line); border-radius:14px; padding:24px; margin-top:14px; }
+.sample .alphabet { font-family:"Avtoport"; font-size:30px; line-height:1.35; word-break:break-word; }
+.sample .small { color:var(--muted); font-size:12.5px; margin-top:8px; }
+
+.logos { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:14px; }
+.logo, .icon { margin:0; border:1px solid var(--line); border-radius:12px; padding:18px 14px; display:flex;
+               align-items:center; justify-content:center; flex-direction:column; gap:10px; background:#fff; }
+.logo img { max-width:100%; max-height:60px; }
+.logo figcaption, .icon figcaption { font-size:12px; color:var(--muted); }
+.icons { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:14px; }
+.icon img { width:104px; height:74px; object-fit:contain; }
+.memo { margin-top:18px; border:1px solid var(--line); border-radius:14px; padding:10px; background:var(--soft); }
+.memo img { width:100%; display:block; border-radius:8px; }
+.memo figcaption { font-size:12.5px; color:var(--muted); padding:8px 6px 2px; }
+
+.swatches { display:grid; gap:10px; }
+.swatch { display:flex; align-items:center; gap:16px; border:1px solid var(--line); border-radius:12px; padding:10px 14px; }
+.chip { width:64px; height:44px; border-radius:8px; background:var(--c); flex:none; }
+.swatch .meta { display:flex; flex-direction:column; gap:2px; }
+.swatch code { font-family:ui-monospace,Consolas,monospace; font-size:12.5px; }
+.swatch span { font-size:12px; color:var(--muted); }
+
+.photo-page { margin-top:34px; }
+.scene { border:1px solid var(--line); border-radius:16px; padding:16px 18px 20px; margin-top:14px; }
+.scene-head { display:flex; align-items:baseline; gap:12px; }
+.scene-head h4 { font-size:16px; }
+.scene-head .count { margin-left:auto; font-size:12px; color:var(--muted); }
+.note { font-size:13px; color:#8A6D3B; background:#FFF8E6; border-left:3px solid #E8B84B;
+        padding:8px 12px; border-radius:0 8px 8px 0; margin:10px 0 14px; }
+.grid-photos { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:12px; }
+.ph { margin:0; }
+.ph img { width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:10px; border:1px solid var(--line); display:block; }
+.ph figcaption { display:flex; align-items:center; gap:8px; margin-top:6px; font-size:12px; }
+.badge { border-radius:999px; padding:2px 9px; font-weight:600; }
+.b-pick { background:#E7F0FF; color:#1A54C0; }
+.b-ok { background:#EEF0F3; color:#5A6068; }
+.b-bad { background:#FDECEC; color:#B3392F; }
+.num { color:var(--muted); }
+
+.todo { display:grid; gap:10px; }
+.todo div { border-left:3px solid var(--blue); padding:6px 0 6px 14px; }
+
+footer { padding:44px 0 70px; color:var(--muted); font-size:13px; }
+
+@media (max-width:760px) {
+  nav { display:none; }
+  .done, .spec { grid-template-columns:1fr; }
+  .hero { padding:44px 0 28px; }
+}
+
+/* ---------- маршрут ---------- */
+.route { position:relative; height:146px; margin-top:6px; }
+.route .track { position:absolute; left:0; right:0; top:76px; height:2px; background:var(--line); border-radius:2px; }
+.route .fill { position:absolute; left:0; top:0; height:2px; width:0; background:var(--blue); border-radius:2px;
+               animation:routeFill 14s linear infinite; }
+.route .truck { position:absolute; top:34px; left:0; width:148px; opacity:.95;
+                animation:routeDrive 14s linear infinite; }
+.route .stop { position:absolute; top:58px; transform:translateX(-50%); text-align:center; width:130px; }
+.route .dot { width:15px; height:15px; margin:0 auto 9px; border-radius:50%; background:#fff;
+              border:2px solid var(--line); animation:stopOn 14s linear infinite; animation-delay:var(--d,0s); }
+.route .stop span { font-size:12.5px; color:var(--muted); }
+@keyframes routeDrive { from { left:-8px; } to { left:calc(100% - 140px); } }
+@keyframes routeFill { from { width:0; } to { width:100%; } }
+@keyframes stopOn {
+  0%   { background:var(--blue); border-color:var(--blue); transform:scale(1.18); }
+  9%   { background:#fff; border-color:var(--line); transform:scale(1); }
+  100% { background:#fff; border-color:var(--line); transform:scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .route .truck, .route .fill, .route .dot { animation:none; }
+  .route .fill { width:100%; }
+}
+
+/* ---------- просмотр ---------- */
+.viewer { position:fixed; inset:0; z-index:100; background:rgba(16,18,22,.95);
+          display:flex; align-items:center; justify-content:center; animation:vIn .18s ease-out; }
+.viewer[hidden] { display:none; }
+.v-stage { position:absolute; inset:58px 76px 74px; display:flex; align-items:center; justify-content:center;
+           touch-action:pan-y; cursor:zoom-out; }
+.v-stage img { max-width:100%; max-height:100%; border-radius:8px; box-shadow:0 24px 70px rgba(0,0,0,.5);
+               animation:vPop .22s ease-out; }
+.v-bar { position:absolute; top:0; left:0; right:0; height:58px; display:flex; align-items:center; gap:14px;
+         padding:0 20px; color:#fff; font-size:13.5px; }
+.v-bar .cap { font-weight:600; }
+.v-bar .cnt { opacity:.55; }
+.v-bar button { margin-left:auto; width:38px; height:38px; border:0; border-radius:10px; cursor:pointer;
+                background:rgba(255,255,255,.12); color:#fff; font-size:22px; line-height:1; }
+.v-bar button:hover { background:rgba(255,255,255,.24); }
+.v-nav { position:absolute; top:50%; transform:translateY(-50%); width:54px; height:54px; border:0; cursor:pointer;
+         border-radius:50%; background:rgba(255,255,255,.12); color:#fff; font-size:28px; line-height:1; }
+.v-nav:hover { background:rgba(255,255,255,.26); }
+.v-prev { left:14px; }
+.v-next { right:14px; }
+body.locked { overflow:hidden; }
+@keyframes vIn { from { opacity:0; } to { opacity:1; } }
+@keyframes vPop { from { opacity:0; transform:scale(.97); } to { opacity:1; transform:scale(1); } }
+@media (max-width:700px) {
+  .v-stage { inset:56px 12px 84px; }
+  .v-nav { width:46px; height:46px; font-size:24px; top:auto; bottom:16px; transform:none; }
+  .v-prev { left:calc(50% - 58px); }
+  .v-next { left:calc(50% + 12px); }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <nav>
+      <a href="#done">Что сделано</a>
+      <a href="#book">Книга</a>
+      <a href="#font">Шрифт</a>
+      <a href="#logo">Логотип</a>
+      <a href="#icons">Иконки</a>
+      <a href="#color">Цвет</a>
+      <a href="#photo">Фото</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap hero">
+  <div class="eyebrow">Книга бренда · этап 1</div>
+  <h1>Первый<br>этап</h1>
+  <p>Система бренда Автопорт-Групп: философия, айдентика, типографика, цвет, фотостиль и иконографика.
+     Здесь же — файлы для работы и варианты фотографий на выбор.</p>
+  <div class="road" aria-hidden="true">
+    <img class="truck far" src="assets/img/icons/01.png" alt="">
+    <img class="truck" src="assets/img/icons/01.png" alt="">
+    <div class="dashes"></div>
+  </div>
+  <div class="stats">
+    <div><b>50</b><span>страниц в книге</span></div>
+    <div><b>15</b><span>иконок</span></div>
+    <div><b>11</b><span>версий логотипа</span></div>
+    <div><b>199</b><span>комплектов файлов</span></div>
+    <div><b>61</b><span>кадр на выбор</span></div>
+  </div>
+</div>
+
+<section id="done"><div class="wrap">
+  <h2>Что сделано</h2>
+  <p class="lead">Первый этап закрыт: книга собрана, файлы разложены, шрифт и знаки готовы к работе.</p>
+  <div class="done">
+    <div class="card"><b>Книга бренда, 50 страниц</b><span>Философия, айдентика, типографика, цвет, фотостиль,
+      иконографика. Единая сетка, навигация, сквозная нумерация.</span></div>
+    <div class="card"><b>Логотип и знак</b><span>11 версий: группа, дескриптор, пять направлений. Три цвета,
+      CMYK и RGB.</span></div>
+    <div class="card"><b>Форматы для всех</b><span>AI, CDR, EPS, PDF, SVG, PNG — 199 комплектов файлов.</span></div>
+    <div class="card"><b>15 иконок</b><span>В тех же форматах и цветах, что логотип.</span></div>
+    <div class="card"><b>Фирменный шрифт Avtoport</b><span>Обычный и курсив, строчные, цифры, знаки, 25 валют.
+      Inter — для текста, Arial — как запасной.</span></div>
+    <div class="card"><b>Палитра с кодами</b><span>HEX, RGB, CMYK, Pantone, RAL, Oracal.</span></div>
+    <div class="card"><b>Фотостиль</b><span>Примеры кадров для трёх страниц — дополняются вариантами ниже.</span></div>
+    <div class="card"><b>Исправлено</b><span>Опечатки, нумерация, дубли страниц, пятое направление, коды плёнки.</span></div>
+  </div>
+</div></section>
+
+
+<section id="route"><div class="wrap">
+  <h2>Путь автомобиля</h2>
+  <p class="lead">Одна машина — четыре контрольные точки. Так же устроены статусы внутри системы:
+     на каждом этапе понятно, где автомобиль и что дальше.</p>
+  <div class="route" aria-hidden="true">
+    <div class="track"><div class="fill"></div></div>
+    <img class="truck" src="assets/img/icons/01.png" alt="">
+    <div class="stop" style="left:6%"><div class="dot" style="--d:0s"></div><span>Приёмка</span></div>
+    <div class="stop" style="left:36%"><div class="dot" style="--d:4.6s"></div><span>Погрузка</span></div>
+    <div class="stop" style="left:66%"><div class="dot" style="--d:9.2s"></div><span>В пути</span></div>
+    <div class="stop" style="left:94%"><div class="dot" style="--d:13.8s"></div><span>Передача</span></div>
+  </div>
+</div></section>
+
+<section id="book"><div class="wrap">
+  <h2>Книга бренда</h2>
+  <p class="lead">50 страниц, версия 3. Нажмите на страницу, чтобы открыть её крупно.</p>
+  <div class="pages"><a class="page" href="assets/pages/p01.webp" data-group="book" data-cap="Страница 1"><img src="assets/pages/p01.webp" loading="lazy" alt="стр. 1"><span>1</span></a>
+<a class="page" href="assets/pages/p02.webp" data-group="book" data-cap="Страница 2"><img src="assets/pages/p02.webp" loading="lazy" alt="стр. 2"><span>2</span></a>
+<a class="page" href="assets/pages/p03.webp" data-group="book" data-cap="Страница 3"><img src="assets/pages/p03.webp" loading="lazy" alt="стр. 3"><span>3</span></a>
+<a class="page" href="assets/pages/p04.webp" data-group="book" data-cap="Страница 4"><img src="assets/pages/p04.webp" loading="lazy" alt="стр. 4"><span>4</span></a>
+<a class="page" href="assets/pages/p05.webp" data-group="book" data-cap="Страница 5"><img src="assets/pages/p05.webp" loading="lazy" alt="стр. 5"><span>5</span></a>
+<a class="page" href="assets/pages/p06.webp" data-group="book" data-cap="Страница 6"><img src="assets/pages/p06.webp" loading="lazy" alt="стр. 6"><span>6</span></a>
+<a class="page" href="assets/pages/p07.webp" data-group="book" data-cap="Страница 7"><img src="assets/pages/p07.webp" loading="lazy" alt="стр. 7"><span>7</span></a>
+<a class="page" href="assets/pages/p08.webp" data-group="book" data-cap="Страница 8"><img src="assets/pages/p08.webp" loading="lazy" alt="стр. 8"><span>8</span></a>
+<a class="page" href="assets/pages/p09.webp" data-group="book" data-cap="Страница 9"><img src="assets/pages/p09.webp" loading="lazy" alt="стр. 9"><span>9</span></a>
+<a class="page" href="assets/pages/p10.webp" data-group="book" data-cap="Страница 10"><img src="assets/pages/p10.webp" loading="lazy" alt="стр. 10"><span>10</span></a>
+<a class="page" href="assets/pages/p11.webp" data-group="book" data-cap="Страница 11"><img src="assets/pages/p11.webp" loading="lazy" alt="стр. 11"><span>11</span></a>
+<a class="page" href="assets/pages/p12.webp" data-group="book" data-cap="Страница 12"><img src="assets/pages/p12.webp" loading="lazy" alt="стр. 12"><span>12</span></a>
+<a class="page" href="assets/pages/p13.webp" data-group="book" data-cap="Страница 13"><img src="assets/pages/p13.webp" loading="lazy" alt="стр. 13"><span>13</span></a>
+<a class="page" href="assets/pages/p14.webp" data-group="book" data-cap="Страница 14"><img src="assets/pages/p14.webp" loading="lazy" alt="стр. 14"><span>14</span></a>
+<a class="page" href="assets/pages/p15.webp" data-group="book" data-cap="Страница 15"><img src="assets/pages/p15.webp" loading="lazy" alt="стр. 15"><span>15</span></a>
+<a class="page" href="assets/pages/p16.webp" data-group="book" data-cap="Страница 16"><img src="assets/pages/p16.webp" loading="lazy" alt="стр. 16"><span>16</span></a>
+<a class="page" href="assets/pages/p17.webp" data-group="book" data-cap="Страница 17"><img src="assets/pages/p17.webp" loading="lazy" alt="стр. 17"><span>17</span></a>
+<a class="page" href="assets/pages/p18.webp" data-group="book" data-cap="Страница 18"><img src="assets/pages/p18.webp" loading="lazy" alt="стр. 18"><span>18</span></a>
+<a class="page" href="assets/pages/p19.webp" data-group="book" data-cap="Страница 19"><img src="assets/pages/p19.webp" loading="lazy" alt="стр. 19"><span>19</span></a>
+<a class="page" href="assets/pages/p20.webp" data-group="book" data-cap="Страница 20"><img src="assets/pages/p20.webp" loading="lazy" alt="стр. 20"><span>20</span></a>
+<a class="page" href="assets/pages/p21.webp" data-group="book" data-cap="Страница 21"><img src="assets/pages/p21.webp" loading="lazy" alt="стр. 21"><span>21</span></a>
+<a class="page" href="assets/pages/p22.webp" data-group="book" data-cap="Страница 22"><img src="assets/pages/p22.webp" loading="lazy" alt="стр. 22"><span>22</span></a>
+<a class="page" href="assets/pages/p23.webp" data-group="book" data-cap="Страница 23"><img src="assets/pages/p23.webp" loading="lazy" alt="стр. 23"><span>23</span></a>
+<a class="page" href="assets/pages/p24.webp" data-group="book" data-cap="Страница 24"><img src="assets/pages/p24.webp" loading="lazy" alt="стр. 24"><span>24</span></a>
+<a class="page" href="assets/pages/p25.webp" data-group="book" data-cap="Страница 25"><img src="assets/pages/p25.webp" loading="lazy" alt="стр. 25"><span>25</span></a>
+<a class="page" href="assets/pages/p26.webp" data-group="book" data-cap="Страница 26"><img src="assets/pages/p26.webp" loading="lazy" alt="стр. 26"><span>26</span></a>
+<a class="page" href="assets/pages/p27.webp" data-group="book" data-cap="Страница 27"><img src="assets/pages/p27.webp" loading="lazy" alt="стр. 27"><span>27</span></a>
+<a class="page" href="assets/pages/p28.webp" data-group="book" data-cap="Страница 28"><img src="assets/pages/p28.webp" loading="lazy" alt="стр. 28"><span>28</span></a>
+<a class="page" href="assets/pages/p29.webp" data-group="book" data-cap="Страница 29"><img src="assets/pages/p29.webp" loading="lazy" alt="стр. 29"><span>29</span></a>
+<a class="page" href="assets/pages/p30.webp" data-group="book" data-cap="Страница 30"><img src="assets/pages/p30.webp" loading="lazy" alt="стр. 30"><span>30</span></a>
+<a class="page" href="assets/pages/p31.webp" data-group="book" data-cap="Страница 31"><img src="assets/pages/p31.webp" loading="lazy" alt="стр. 31"><span>31</span></a>
+<a class="page" href="assets/pages/p32.webp" data-group="book" data-cap="Страница 32"><img src="assets/pages/p32.webp" loading="lazy" alt="стр. 32"><span>32</span></a>
+<a class="page" href="assets/pages/p33.webp" data-group="book" data-cap="Страница 33"><img src="assets/pages/p33.webp" loading="lazy" alt="стр. 33"><span>33</span></a>
+<a class="page" href="assets/pages/p34.webp" data-group="book" data-cap="Страница 34"><img src="assets/pages/p34.webp" loading="lazy" alt="стр. 34"><span>34</span></a>
+<a class="page" href="assets/pages/p35.webp" data-group="book" data-cap="Страница 35"><img src="assets/pages/p35.webp" loading="lazy" alt="стр. 35"><span>35</span></a>
+<a class="page" href="assets/pages/p36.webp" data-group="book" data-cap="Страница 36"><img src="assets/pages/p36.webp" loading="lazy" alt="стр. 36"><span>36</span></a>
+<a class="page" href="assets/pages/p37.webp" data-group="book" data-cap="Страница 37"><img src="assets/pages/p37.webp" loading="lazy" alt="стр. 37"><span>37</span></a>
+<a class="page" href="assets/pages/p38.webp" data-group="book" data-cap="Страница 38"><img src="assets/pages/p38.webp" loading="lazy" alt="стр. 38"><span>38</span></a>
+<a class="page" href="assets/pages/p39.webp" data-group="book" data-cap="Страница 39"><img src="assets/pages/p39.webp" loading="lazy" alt="стр. 39"><span>39</span></a>
+<a class="page" href="assets/pages/p40.webp" data-group="book" data-cap="Страница 40"><img src="assets/pages/p40.webp" loading="lazy" alt="стр. 40"><span>40</span></a>
+<a class="page" href="assets/pages/p41.webp" data-group="book" data-cap="Страница 41"><img src="assets/pages/p41.webp" loading="lazy" alt="стр. 41"><span>41</span></a>
+<a class="page" href="assets/pages/p42.webp" data-group="book" data-cap="Страница 42"><img src="assets/pages/p42.webp" loading="lazy" alt="стр. 42"><span>42</span></a>
+<a class="page" href="assets/pages/p43.webp" data-group="book" data-cap="Страница 43"><img src="assets/pages/p43.webp" loading="lazy" alt="стр. 43"><span>43</span></a>
+<a class="page" href="assets/pages/p44.webp" data-group="book" data-cap="Страница 44"><img src="assets/pages/p44.webp" loading="lazy" alt="стр. 44"><span>44</span></a>
+<a class="page" href="assets/pages/p45.webp" data-group="book" data-cap="Страница 45"><img src="assets/pages/p45.webp" loading="lazy" alt="стр. 45"><span>45</span></a>
+<a class="page" href="assets/pages/p46.webp" data-group="book" data-cap="Страница 46"><img src="assets/pages/p46.webp" loading="lazy" alt="стр. 46"><span>46</span></a>
+<a class="page" href="assets/pages/p47.webp" data-group="book" data-cap="Страница 47"><img src="assets/pages/p47.webp" loading="lazy" alt="стр. 47"><span>47</span></a>
+<a class="page" href="assets/pages/p48.webp" data-group="book" data-cap="Страница 48"><img src="assets/pages/p48.webp" loading="lazy" alt="стр. 48"><span>48</span></a>
+<a class="page" href="assets/pages/p49.webp" data-group="book" data-cap="Страница 49"><img src="assets/pages/p49.webp" loading="lazy" alt="стр. 49"><span>49</span></a>
+<a class="page" href="assets/pages/p50.webp" data-group="book" data-cap="Страница 50"><img src="assets/pages/p50.webp" loading="lazy" alt="стр. 50"><span>50</span></a></div>
+  <p style="margin-top:22px">
+    <a class="btn" href="assets/bb-avtoport-v3.pdf" target="_blank">Скачать PDF книги</a>
+    <a class="btn ghost" href="assets/bb-avtoport-v3.pdf" target="_blank" style="margin-left:8px">Открыть в новой вкладке</a>
+  </p>
+</div></section>
+
+<section id="font"><div class="wrap">
+  <h2>Шрифт Avtoport</h2>
+  <p class="lead">Фирменный шрифт сделан с нуля: в исходных файлах были только кривые. Трафаретная геометрия,
+     прописные и строчные, цифры, знаки, валюты. Italic — отдельное начертание.</p>
+  <div class="sample">
+    <div class="alphabet">АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ</div>
+    <div class="alphabet">абвгдеёжзийклмнопрстуфхцчшщъыьэюя</div>
+    <div class="alphabet">0123456789 — @ &amp; ₽ ₸ ₴ ₺ ₦ ₫ ₱ ₲ ₵ ₡ ฿ ₩ ₹ ₿ ₭ ₮</div>
+    <div class="small"><i>Italic — курсив</i>. Курсив заявлен как отдельное начертание, но в правилах набора его нет.</div>
+  </div>
+  <p style="margin-top:16px">
+    <a class="btn" href="assets/fonts/Avtoport.ttf" download>Скачать Avtoport Regular</a>
+    <a class="btn ghost" href="assets/fonts/Avtoport-Italic.ttf" download style="margin-left:8px">Скачать Italic</a>
+  </p>
+  <div class="spec" style="margin-top:18px">
+    <figure style="margin:0"><img src="assets/img/spec/spec-regular.webp" alt=""><figcaption class="small">Таблица Regular</figcaption></figure>
+    <figure style="margin:0"><img src="assets/img/spec/spec-italic.webp" alt=""><figcaption class="small">Таблица Italic</figcaption></figure>
+    <figure style="margin:0"><img src="assets/img/spec/spec-symbols.webp" alt=""><figcaption class="small">Все символы</figcaption></figure>
+  </div>
+</div></section>
+
+<section id="logo"><div class="wrap">
+  <h2>Логотип и знак</h2>
+  <p class="lead">Одиннадцать версий: от максимальной с дескриптором до знака и знака-мини. Всё в трёх цветах и двух
+     цветовых пространствах.</p>
+  <div class="logos"><figure class="logo"><img src="assets/img/logo/logo-max.png" alt="Лого (макс)"><figcaption>Лого (макс)</figcaption></figure>
+<figure class="logo"><img src="assets/img/logo/logo-min.png" alt="Лого (мини)"><figcaption>Лого (мини)</figcaption></figure>
+<figure class="logo"><img src="assets/img/logo/logo-desc.png" alt="Лого с дескриптором"><figcaption>Лого с дескриптором</figcaption></figure>
+<figure class="logo"><img src="assets/img/logo/logo-group.png" alt="Лого с группой дескрипторов"><figcaption>Лого с группой дескрипторов</figcaption></figure>
+<figure class="logo"><img src="assets/img/logo/logo-logistika.png" alt="Логистика"><figcaption>Логистика</figcaption></figure>
+<figure class="logo"><img src="assets/img/logo/logo-terminal.png" alt="Терминал"><figcaption>Терминал</figcaption></figure>
+<figure class="logo"><img src="assets/img/logo/logo-import.png" alt="Импорт"><figcaption>Импорт</figcaption></figure>
+<figure class="logo"><img src="assets/img/logo/logo-servis.png" alt="Сервис"><figcaption>Сервис</figcaption></figure>
+<figure class="logo"><img src="assets/img/logo/logo-strahovanie.png" alt="Страхование"><figcaption>Страхование</figcaption></figure>
+<figure class="logo"><img src="assets/img/logo/znak.png" alt="Знак"><figcaption>Знак</figcaption></figure>
+<figure class="logo"><img src="assets/img/logo/znak-mini.png" alt="Знак (мини)"><figcaption>Знак (мини)</figcaption></figure></div>
+  <figure class="memo">
+    <img src="assets/img/memo/logo-pamyatka.png" alt="Памятка по логотипу">
+    <figcaption>Памятка: как собирается логотип, охранное поле и минимальные размеры.</figcaption>
+  </figure>
+</div></section>
+
+<section id="icons"><div class="wrap">
+  <h2>Иконки</h2>
+  <p class="lead">15 знаков одной толщины штриха и одной геометрии: техника, операции, инфраструктура.</p>
+  <div class="icons"><figure class="icon"><img src="assets/img/icons/01.png" alt="иконка 1"><figcaption>1</figcaption></figure>
+<figure class="icon"><img src="assets/img/icons/02.png" alt="иконка 2"><figcaption>2</figcaption></figure>
+<figure class="icon"><img src="assets/img/icons/03.png" alt="иконка 3"><figcaption>3</figcaption></figure>
+<figure class="icon"><img src="assets/img/icons/04.png" alt="иконка 4"><figcaption>4</figcaption></figure>
+<figure class="icon"><img src="assets/img/icons/05.png" alt="иконка 5"><figcaption>5</figcaption></figure>
+<figure class="icon"><img src="assets/img/icons/06.png" alt="иконка 6"><figcaption>6</figcaption></figure>
+<figure class="icon"><img src="assets/img/icons/07.png" alt="иконка 7"><figcaption>7</figcaption></figure>
+<figure class="icon"><img src="assets/img/icons/08.png" alt="иконка 8"><figcaption>8</figcaption></figure>
+<figure class="icon"><img src="assets/img/icons/09.png" alt="иконка 9"><figcaption>9</figcaption></figure>
+<figure class="icon"><img src="assets/img/icons/10.png" alt="иконка 10"><figcaption>10</figcaption></figure>
+<figure class="icon"><img src="assets/img/icons/11.png" alt="иконка 11"><figcaption>11</figcaption></figure>
+<figure class="icon"><img src="assets/img/icons/12.png" alt="иконка 12"><figcaption>12</figcaption></figure>
+<figure class="icon"><img src="assets/img/icons/13.png" alt="иконка 13"><figcaption>13</figcaption></figure>
+<figure class="icon"><img src="assets/img/icons/14.png" alt="иконка 14"><figcaption>14</figcaption></figure>
+<figure class="icon"><img src="assets/img/icons/15.png" alt="иконка 15"><figcaption>15</figcaption></figure></div>
+  <figure class="memo">
+    <img src="assets/img/memo/znaki-spravka.png" alt="Справка по знакам">
+    <figcaption>Справка по знакам: сетка, толщина штриха, правила построения.</figcaption>
+  </figure>
+</div></section>
+
+<section id="color"><div class="wrap">
+  <h2>Цвет</h2>
+  <p class="lead">Пять цветов с кодами для экрана и производства. Синий — сигнал системы, остальные держат иерархию.</p>
+  <div class="swatches"><div class="swatch" style="--c:#286EF2">
+          <div class="chip"></div>
+          <div class="meta"><b>40% · Сигнальный синий</b><code>#286EF2</code><span>ORACAL 641-084 · PANTONE 2727C · RAL 5005</span></div>
+        </div>
+<div class="swatch" style="--c:#2E3035">
+          <div class="chip"></div>
+          <div class="meta"><b>30% · Индустриальный графит</b><code>#2E3035</code><span>ORACAL 641-073 · PANTONE 426C · RAL 7021</span></div>
+        </div>
+<div class="swatch" style="--c:#A6A6A6">
+          <div class="chip"></div>
+          <div class="meta"><b>15% · Технический серый</b><code>#A6A6A6</code><span>ORACAL 641-072 · PANTONE Cool Gray 6C · RAL 7001</span></div>
+        </div>
+<div class="swatch" style="--c:#6D6C6C">
+          <div class="chip"></div>
+          <div class="meta"><b>10% · Стальной серый</b><code>#6D6C6C</code><span>ORACAL 641-074 · PANTONE 424C · RAL 7005</span></div>
+        </div>
+<div class="swatch" style="--c:#0B2A64">
+          <div class="chip"></div>
+          <div class="meta"><b>5% · Глубокий синий</b><code>#0B2A64</code><span>ORACAL 641-050 · PANTONE 294C · RAL 5026</span></div>
+        </div></div>
+  <p class="note" style="margin-top:18px">Перед покраской стелы сверьте синий по вееру RAL: 5005 Signal Blue темнее
+     #286EF2. Плёнка 084 бывает в глянце (641-084) и мате (641M-084) — нужно выбрать серию.</p>
+</div></section>
+
+<section id="photo"><div class="wrap">
+  <h2>Фото: варианты на выбор</h2>
+  <p class="lead">Сгенерированные кадры по трём страницам фотостиля. Отмечено, что рекомендую, что можно взять,
+     что не стоит. Под каждым блоком — что придётся поправить в Photoshop.</p>
+  
+      <section class="photo-page">
+        <h3>Стр. 46 — Люди в процессе</h3>
+        <p class="lead">Сотрудник за понятным действием: осмотр, оформление, погрузка, передача. В центре кадра — компетентность, а не поза.</p>
+        
+      <div class="scene">
+        <div class="scene-head">
+          <h4>Диспетчер в офисе</h4>
+          <span class="count">6 вариантов</span>
+        </div>
+        <div class="grid-photos">
+        <figure class="ph">
+          <a href="assets/img/photos/46-s1-1.webp" data-group="ph46-1" data-cap="Стр. 46 · № 1"><img src="assets/img/photos/46-s1-1.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 1</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s1-2.webp" data-group="ph46-1" data-cap="Стр. 46 · № 2"><img src="assets/img/photos/46-s1-2.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 2</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s1-3.webp" data-group="ph46-1" data-cap="Стр. 46 · № 3"><img src="assets/img/photos/46-s1-3.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 3</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s1-4.webp" data-group="ph46-1" data-cap="Стр. 46 · № 4"><img src="assets/img/photos/46-s1-4.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 4</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s1-5.webp" data-group="ph46-1" data-cap="Стр. 46 · № 5"><img src="assets/img/photos/46-s1-5.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 5</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s1-6.webp" data-group="ph46-1" data-cap="Стр. 46 · № 6"><img src="assets/img/photos/46-s1-6.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 6</span></figcaption>
+        </figure></div>
+      </div>
+      <div class="scene">
+        <div class="scene-head">
+          <h4>Дождь - работа не останавливается</h4>
+          <span class="count">6 вариантов</span>
+        </div>
+        <div class="grid-photos">
+        <figure class="ph">
+          <a href="assets/img/photos/46-s2-1.webp" data-group="ph46-2" data-cap="Стр. 46 · № 1"><img src="assets/img/photos/46-s2-1.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 1</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s2-2.webp" data-group="ph46-2" data-cap="Стр. 46 · № 2"><img src="assets/img/photos/46-s2-2.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 2</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s2-3.webp" data-group="ph46-2" data-cap="Стр. 46 · № 3"><img src="assets/img/photos/46-s2-3.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 3</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s2-4.webp" data-group="ph46-2" data-cap="Стр. 46 · № 4"><img src="assets/img/photos/46-s2-4.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 4</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s2-5.webp" data-group="ph46-2" data-cap="Стр. 46 · № 5"><img src="assets/img/photos/46-s2-5.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 5</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s2-6.webp" data-group="ph46-2" data-cap="Стр. 46 · № 6"><img src="assets/img/photos/46-s2-6.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 6</span></figcaption>
+        </figure></div>
+      </div>
+      <div class="scene">
+        <div class="scene-head">
+          <h4>Осмотр кузова — человек присел у порога</h4>
+          <span class="count">3 варианта</span>
+        </div>
+        <div class="grid-photos">
+        <figure class="ph">
+          <a href="assets/img/photos/46-s3-1.webp" data-group="ph46-3" data-cap="Стр. 46 · № 1"><img src="assets/img/photos/46-s3-1.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 1</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s3-2.webp" data-group="ph46-3" data-cap="Стр. 46 · № 2"><img src="assets/img/photos/46-s3-2.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 2</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s3-3.webp" data-group="ph46-3" data-cap="Стр. 46 · № 3"><img src="assets/img/photos/46-s3-3.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 3</span></figcaption>
+        </figure></div>
+      </div>
+      <div class="scene">
+        <div class="scene-head">
+          <h4>Оформление документов в терминале</h4>
+          <span class="count">7 вариантов</span>
+        </div>
+        <div class="grid-photos">
+        <figure class="ph">
+          <a href="assets/img/photos/46-s4-1.webp" data-group="ph46-4" data-cap="Стр. 46 · № 1"><img src="assets/img/photos/46-s4-1.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 1</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s4-2.webp" data-group="ph46-4" data-cap="Стр. 46 · № 2"><img src="assets/img/photos/46-s4-2.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 2</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s4-3.webp" data-group="ph46-4" data-cap="Стр. 46 · № 3"><img src="assets/img/photos/46-s4-3.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 3</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s4-4.webp" data-group="ph46-4" data-cap="Стр. 46 · № 4"><img src="assets/img/photos/46-s4-4.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 4</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s4-5.webp" data-group="ph46-4" data-cap="Стр. 46 · № 5"><img src="assets/img/photos/46-s4-5.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 5</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s4-6.webp" data-group="ph46-4" data-cap="Стр. 46 · № 6"><img src="assets/img/photos/46-s4-6.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 6</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s4-7.webp" data-group="ph46-4" data-cap="Стр. 46 · № 7"><img src="assets/img/photos/46-s4-7.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 7</span></figcaption>
+        </figure></div>
+      </div>
+      <div class="scene">
+        <div class="scene-head">
+          <h4>Передача документов, а не ключей</h4>
+          <span class="count">7 вариантов</span>
+        </div>
+        <div class="grid-photos">
+        <figure class="ph">
+          <a href="assets/img/photos/46-s5-1.webp" data-group="ph46-5" data-cap="Стр. 46 · № 1"><img src="assets/img/photos/46-s5-1.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 1</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s5-2.webp" data-group="ph46-5" data-cap="Стр. 46 · № 2"><img src="assets/img/photos/46-s5-2.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 2</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s5-3.webp" data-group="ph46-5" data-cap="Стр. 46 · № 3"><img src="assets/img/photos/46-s5-3.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 3</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s5-4.webp" data-group="ph46-5" data-cap="Стр. 46 · № 4"><img src="assets/img/photos/46-s5-4.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 4</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s5-5.webp" data-group="ph46-5" data-cap="Стр. 46 · № 5"><img src="assets/img/photos/46-s5-5.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 5</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s5-6.webp" data-group="ph46-5" data-cap="Стр. 46 · № 6"><img src="assets/img/photos/46-s5-6.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 6</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s5-7.webp" data-group="ph46-5" data-cap="Стр. 46 · № 7"><img src="assets/img/photos/46-s5-7.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 7</span></figcaption>
+        </figure></div>
+      </div>
+      <div class="scene">
+        <div class="scene-head">
+          <h4>Погрузка на верхний ярус</h4>
+          <span class="count">6 вариантов</span>
+        </div>
+        <div class="grid-photos">
+        <figure class="ph">
+          <a href="assets/img/photos/46-s6-1.webp" data-group="ph46-6" data-cap="Стр. 46 · № 1"><img src="assets/img/photos/46-s6-1.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 1</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s6-2.webp" data-group="ph46-6" data-cap="Стр. 46 · № 2"><img src="assets/img/photos/46-s6-2.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 2</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s6-3.webp" data-group="ph46-6" data-cap="Стр. 46 · № 3"><img src="assets/img/photos/46-s6-3.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 3</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s6-4.webp" data-group="ph46-6" data-cap="Стр. 46 · № 4"><img src="assets/img/photos/46-s6-4.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 4</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s6-5.webp" data-group="ph46-6" data-cap="Стр. 46 · № 5"><img src="assets/img/photos/46-s6-5.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 5</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/46-s6-6.webp" data-group="ph46-6" data-cap="Стр. 46 · № 6"><img src="assets/img/photos/46-s6-6.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 6</span></figcaption>
+        </figure></div>
+      </div>
+      </section>
+      <section class="photo-page">
+        <h3>Стр. 47 — Транспорт и рабочая среда</h3>
+        <p class="lead">Автовозы, автомобили и терминалы так, чтобы читались конструкция, масштаб и назначение.</p>
+        
+      <div class="scene">
+        <div class="scene-head">
+          <h4>Автовоз 3на4, целиком</h4>
+          <span class="count">1 вариант</span>
+        </div>
+        <div class="grid-photos">
+        <figure class="ph">
+          <a href="assets/img/photos/47-s1-1.webp" data-group="ph47-1" data-cap="Стр. 47 · № 1"><img src="assets/img/photos/47-s1-1.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 1</span></figcaption>
+        </figure></div>
+      </div>
+      <div class="scene">
+        <div class="scene-head">
+          <h4>Автовоз фронтально, симметрия</h4>
+          <span class="count">2 варианта</span>
+        </div>
+        <div class="grid-photos">
+        <figure class="ph">
+          <a href="assets/img/photos/47-s2-1.webp" data-group="ph47-2" data-cap="Стр. 47 · № 1"><img src="assets/img/photos/47-s2-1.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 1</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/47-s2-2.webp" data-group="ph47-2" data-cap="Стр. 47 · № 2"><img src="assets/img/photos/47-s2-2.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 2</span></figcaption>
+        </figure></div>
+      </div>
+      <div class="scene">
+        <div class="scene-head">
+          <h4>Деталь маркировка и крепление</h4>
+          <span class="count">4 варианта</span>
+        </div>
+        <div class="grid-photos">
+        <figure class="ph">
+          <a href="assets/img/photos/47-s3-1.webp" data-group="ph47-3" data-cap="Стр. 47 · № 1"><img src="assets/img/photos/47-s3-1.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 1</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/47-s3-2.webp" data-group="ph47-3" data-cap="Стр. 47 · № 2"><img src="assets/img/photos/47-s3-2.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 2</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/47-s3-3.webp" data-group="ph47-3" data-cap="Стр. 47 · № 3"><img src="assets/img/photos/47-s3-3.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 3</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/47-s3-4.webp" data-group="ph47-3" data-cap="Стр. 47 · № 4"><img src="assets/img/photos/47-s3-4.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 4</span></figcaption>
+        </figure></div>
+      </div>
+      <div class="scene">
+        <div class="scene-head">
+          <h4>Ночная смена</h4>
+          <span class="count">2 варианта</span>
+        </div>
+        <div class="grid-photos">
+        <figure class="ph">
+          <a href="assets/img/photos/47-s4-1.webp" data-group="ph47-4" data-cap="Стр. 47 · № 1"><img src="assets/img/photos/47-s4-1.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 1</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/47-s4-2.webp" data-group="ph47-4" data-cap="Стр. 47 · № 2"><img src="assets/img/photos/47-s4-2.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 2</span></figcaption>
+        </figure></div>
+      </div>
+      <div class="scene">
+        <div class="scene-head">
+          <h4>Профиль в движении</h4>
+          <span class="count">7 вариантов</span>
+        </div>
+        <div class="grid-photos">
+        <figure class="ph">
+          <a href="assets/img/photos/47-s5-1.webp" data-group="ph47-5" data-cap="Стр. 47 · № 1"><img src="assets/img/photos/47-s5-1.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 1</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/47-s5-2.webp" data-group="ph47-5" data-cap="Стр. 47 · № 2"><img src="assets/img/photos/47-s5-2.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 2</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/47-s5-3.webp" data-group="ph47-5" data-cap="Стр. 47 · № 3"><img src="assets/img/photos/47-s5-3.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 3</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/47-s5-4.webp" data-group="ph47-5" data-cap="Стр. 47 · № 4"><img src="assets/img/photos/47-s5-4.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 4</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/47-s5-5.webp" data-group="ph47-5" data-cap="Стр. 47 · № 5"><img src="assets/img/photos/47-s5-5.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 5</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/47-s5-6.webp" data-group="ph47-5" data-cap="Стр. 47 · № 6"><img src="assets/img/photos/47-s5-6.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 6</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/47-s5-7.webp" data-group="ph47-5" data-cap="Стр. 47 · № 7"><img src="assets/img/photos/47-s5-7.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 7</span></figcaption>
+        </figure></div>
+      </div>
+      <div class="scene">
+        <div class="scene-head">
+          <h4>Терминал ряд машин</h4>
+          <span class="count">4 варианта</span>
+        </div>
+        <div class="grid-photos">
+        <figure class="ph">
+          <a href="assets/img/photos/47-s6-1.webp" data-group="ph47-6" data-cap="Стр. 47 · № 1"><img src="assets/img/photos/47-s6-1.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 1</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/47-s6-2.webp" data-group="ph47-6" data-cap="Стр. 47 · № 2"><img src="assets/img/photos/47-s6-2.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 2</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/47-s6-3.webp" data-group="ph47-6" data-cap="Стр. 47 · № 3"><img src="assets/img/photos/47-s6-3.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 3</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/47-s6-4.webp" data-group="ph47-6" data-cap="Стр. 47 · № 4"><img src="assets/img/photos/47-s6-4.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 4</span></figcaption>
+        </figure></div>
+      </div>
+      </section>
+      <section class="photo-page">
+        <h3>Стр. 48 — Краткие правила</h3>
+        <p class="lead">Реальный процесс, понятный объект, ровный горизонт, естественный цвет, проверенные права на публикацию.</p>
+        
+      <div class="scene">
+        <div class="scene-head">
+          <h4>Среда без людей только геометрия</h4>
+          <span class="count">2 варианта</span>
+        </div>
+        <div class="grid-photos">
+        <figure class="ph">
+          <a href="assets/img/photos/48-s1-1.webp" data-group="ph48-1" data-cap="Стр. 48 · № 1"><img src="assets/img/photos/48-s1-1.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 1</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/48-s1-2.webp" data-group="ph48-1" data-cap="Стр. 48 · № 2"><img src="assets/img/photos/48-s1-2.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 2</span></figcaption>
+        </figure></div>
+      </div>
+      <div class="scene">
+        <div class="scene-head">
+          <h4>Эталон чистый кадр</h4>
+          <span class="count">4 варианта</span>
+        </div>
+        <div class="grid-photos">
+        <figure class="ph">
+          <a href="assets/img/photos/48-s2-1.webp" data-group="ph48-2" data-cap="Стр. 48 · № 1"><img src="assets/img/photos/48-s2-1.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 1</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/48-s2-2.webp" data-group="ph48-2" data-cap="Стр. 48 · № 2"><img src="assets/img/photos/48-s2-2.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 2</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/48-s2-3.webp" data-group="ph48-2" data-cap="Стр. 48 · № 3"><img src="assets/img/photos/48-s2-3.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 3</span></figcaption>
+        </figure>
+        <figure class="ph">
+          <a href="assets/img/photos/48-s2-4.webp" data-group="ph48-2" data-cap="Стр. 48 · № 4"><img src="assets/img/photos/48-s2-4.webp" loading="lazy" alt=""></a>
+          <figcaption><span class="num">№ 4</span></figcaption>
+        </figure></div>
+      </div>
+      </section>
+</div></section>
+
+<footer><div class="wrap">
+  Автопорт-Групп · книга бренда, версия 3 · первый этап · 12 ноября 2026
+</div></footer>
+
+
+<div class="viewer" id="viewer" hidden>
+  <div class="v-bar">
+    <span class="cap" id="v-cap"></span>
+    <span class="cnt" id="v-cnt"></span>
+    <button id="v-close" aria-label="Закрыть">×</button>
+  </div>
+  <button class="v-nav v-prev" id="v-prev" aria-label="Назад">‹</button>
+  <div class="v-stage" id="v-stage"><img id="v-img" alt=""></div>
+  <button class="v-nav v-next" id="v-next" aria-label="Вперёд">›</button>
+</div>
+
+
+<script>
+(function () {
+  var groups = {};
+  document.querySelectorAll('a[data-group]').forEach(function (a) {
+    var g = a.getAttribute('data-group');
+    if (!groups[g]) groups[g] = [];
+    groups[g].push({ src: a.getAttribute('href'), cap: a.getAttribute('data-cap') || '' });
+    a.dataset.idx = String(groups[g].length - 1);
+  });
+
+  var v = document.getElementById('viewer');
+  var img = document.getElementById('v-img');
+  var cap = document.getElementById('v-cap');
+  var cnt = document.getElementById('v-cnt');
+  var prev = document.getElementById('v-prev');
+  var next = document.getElementById('v-next');
+  var stage = document.getElementById('v-stage');
+  var cur = [];
+  var pos = 0;
+
+  function draw() {
+    if (!cur.length) return;
+    img.src = cur[pos].src;
+    cap.textContent = cur[pos].cap;
+    cnt.textContent = cur.length > 1 ? (pos + 1) + ' / ' + cur.length : '';
+    var many = cur.length > 1;
+    prev.style.display = many ? 'block' : 'none';
+    next.style.display = many ? 'block' : 'none';
+  }
+
+  function open(g, i) {
+    cur = groups[g] || [];
+    pos = i || 0;
+    v.hidden = false;
+    document.body.classList.add('locked');
+    draw();
+  }
+
+  function close() {
+    v.hidden = true;
+    document.body.classList.remove('locked');
+    img.removeAttribute('src');
+  }
+
+  function step(d) {
+    if (cur.length < 2) return;
+    pos = (pos + d + cur.length) % cur.length;
+    draw();
+  }
+
+  document.querySelectorAll('a[data-group]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      open(a.getAttribute('data-group'), parseInt(a.dataset.idx, 10) || 0);
+    });
+  });
+
+  document.getElementById('v-close').addEventListener('click', close);
+  prev.addEventListener('click', function (e) { e.stopPropagation(); step(-1); });
+  next.addEventListener('click', function (e) { e.stopPropagation(); step(1); });
+  v.addEventListener('click', function (e) { if (e.target === v) close(); });
+  stage.addEventListener('click', function (e) { if (e.target === stage) close(); });
+
+  document.addEventListener('keydown', function (e) {
+    if (v.hidden) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') step(-1);
+    if (e.key === 'ArrowRight') step(1);
+  });
+
+  var x0 = null;
+  stage.addEventListener('pointerdown', function (e) { x0 = e.clientX; });
+  stage.addEventListener('pointerup', function (e) {
+    if (x0 === null) return;
+    var dx = e.clientX - x0;
+    x0 = null;
+    if (Math.abs(dx) > 45) step(dx < 0 ? 1 : -1);
+  });
+  stage.addEventListener('pointercancel', function () { x0 = null; });
+})();
+</script>
+
+</body>
+</html>
